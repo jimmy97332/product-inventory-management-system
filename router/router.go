@@ -2,6 +2,7 @@ package router
 
 import (
 	"myapp/controllers"
+	"myapp/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,12 +10,17 @@ import (
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
 
-	r.GET("/", controllers.HomeHandler)
-	r.POST("/products", controllers.CreateProduct)
-	r.PUT("/products/:id", controllers.UpdateProduct)
-	r.DELETE("/products/:id", controllers.DeleteProduct)
-	r.GET("/products/:id", controllers.GetProductByID)
-	r.GET("/products", controllers.GetAllProducts)
-
+	r.POST("/login/:user", controllers.Login)
+	// the APIs protect by using JWT
+	authorized := r.Group("/protected")
+	authorized.Use(middlewares.JWTAuthMiddleware())
+	{
+		authorized.GET("/", controllers.HomeHandler)
+		authorized.POST("/products", controllers.CreateProduct)
+		authorized.PUT("/products/:id", controllers.UpdateProduct)
+		authorized.DELETE("/products/:id", controllers.DeleteProduct)
+		authorized.GET("/products/:id", controllers.GetProductByID)
+		authorized.GET("/products", controllers.GetAllProducts)
+	}
 	return r
 }

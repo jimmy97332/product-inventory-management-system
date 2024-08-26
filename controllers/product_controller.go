@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"myapp/models"
+	"myapp/utils"
 	"net/http"
 
 	"strconv"
@@ -9,6 +10,15 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
+
+func Login(c *gin.Context) {
+	token, err := utils.GenerateJWT(c.Param("user"))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not generate token"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"token": token})
+}
 
 func HomeHandler(c *gin.Context) {
 	c.String(http.StatusOK, "Welcome to the Product API")

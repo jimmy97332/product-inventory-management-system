@@ -2,14 +2,15 @@ package controllers
 
 import (
 	"bytes"
+	"errors"
+	"fmt"
 	"io"
+	"myapp/models"
+	"myapp/utils"
 	"net/http"
 	"net/http/httptest"
-	"testing"
-
-	"errors"
-	"myapp/models"
 	"regexp"
+	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/gin-gonic/gin"
@@ -17,6 +18,40 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
+
+// Mock GenerateJWT
+func MockGenerateJWT(user string) (string, error) {
+	if user == "validUser" {
+		return "mockedToken", nil
+	}
+	return "", fmt.Errorf("mocked error")
+}
+
+func TestLogin(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	r := gin.Default()
+
+	// Replace GenerateJWT to Mock GenerateJWT
+	utils.GenerateJWT = MockGenerateJWT
+
+	r.GET("/login/:user", Login)
+
+	// test valid user
+	req, _ := http.NewRequest("GET", "/login/validUser", nil)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.JSONEq(t, `{"token": "mockedToken"}`, w.Body.String())
+
+	// test invalid user
+	req, _ = http.NewRequest("GET", "/login/invalidUser", nil)
+	w = httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusInternalServerError, w.Code)
+	assert.JSONEq(t, `{"error": "Could not generate token"}`, w.Body.String())
+}
 
 func TestHomeHandler(t *testing.T) {
 	gin.SetMode(gin.TestMode)
