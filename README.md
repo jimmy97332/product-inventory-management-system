@@ -163,6 +163,7 @@ The test coverage is approximately **80%**, ensuring a high level of code covera
 * Web Framework: **Gin** framework is known for its speed and simplicity, which makes it an excellent choice for building RESTful APIs.
 * Authentication: The project also provides middleware support, which was utilized to implement **JWT** authentication for protected routes.
 * Database Handling: We use **GORM** as the ORM for interacting with the mySQL database, with connection pooling and safe transactions implemented.
+* godotenv: The project uses **godotenv** to manage environment variables. This allows for flexible configuration settings without hardcoding sensitive information into the codebase. Ensure to create a `.env` file with the necessary environment variables for proper configuration.
 * Error Handling: Proper error handling is implemented to ensure meaningful responses and uses the **Logrus** library which provides detailed logs that help in debugging and monitoring the application's behavior.
 * JSON: All data between the client and server is exchanged in JSON format for simplicity and consistency.
 Performance Considerations: Efficient database queries and connection pooling are used to handle performance concerns.
