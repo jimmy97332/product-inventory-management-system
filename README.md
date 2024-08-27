@@ -116,22 +116,22 @@ This migration process handles creating the table
 if it doesn’t exist and updating the schema as necessary, 
 based on changes to the Product model.
 　　　　
-##　Installation and Setup
-###　Prerequisites
+## Installation and Setup
+### Prerequisites
 * Golang installed
 * MySQL database    
-###　Steps
-####　Clone the Repository:
+### Steps
+#### Clone the Repository:
 ```
 git clone https://github.com/jimmy97332/product-inventory.git
 ```
-####　Install Dependencies:
+#### Install Dependencies:
 * Before running the application, make sure to tidy up your Go module dependencies. This will add any missing dependencies and remove any that are no longer needed.　　　　
 Run the following command:
 ```
 go mod tidy
 ```
-####　Configure Database:
+#### Configure Database:
 * Update the database configuration in environment（.env） variables.
 ```
 DATABASE_URL=root:password@tcp(localhost:3306)/mydatabase?charset=utf8mb4&parseTime=True&loc=Local
