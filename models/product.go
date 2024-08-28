@@ -24,7 +24,7 @@ func InitDB(dsn string) (*gorm.DB, error) {
 
 	// global DB
 	DB = db
-	return db, nil
+	return DB, nil
 }
 
 func GetAllProducts() ([]Product, error) {

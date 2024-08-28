@@ -14,6 +14,7 @@ import (
 func Login(c *gin.Context) {
 	token, err := utils.GenerateJWT(c.Param("user"))
 	if err != nil {
+		logrus.Error("Could not generate token:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not generate token"})
 		return
 	}
@@ -27,6 +28,7 @@ func HomeHandler(c *gin.Context) {
 func GetAllProducts(c *gin.Context) {
 	products, err := models.GetAllProducts()
 	if err != nil {
+		logrus.Error("Failed to retrieve products:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve products"})
 		return
 	}
@@ -43,6 +45,7 @@ func GetProductByID(c *gin.Context) {
 
 	product, err := models.GetProductByID(int(id))
 	if err != nil {
+		logrus.Error("Product not found:", err)
 		c.JSON(http.StatusNotFound, gin.H{"error": "Product not found"})
 		return
 	}

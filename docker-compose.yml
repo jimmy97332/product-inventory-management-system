@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  myapp:
+    build: .
+    container_name: myapp-container
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    # environment:
+      # - DB_HOST=mysql
+      # - DB_PORT=3307
+      # - DB_USER=admin
+      # - DB_PASSWORD=123456
+      # - DB_NAME=mydatabase
+    networks:
+      - "mynet"
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: 123456
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - "mynet"
+
+networks:
+  mynet:
+    driver: "bridge"
+
+volumes:
+  mysql-data:
