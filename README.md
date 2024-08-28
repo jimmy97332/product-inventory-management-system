@@ -10,7 +10,12 @@ It allows users to add, update, delete, and retrieve product information.
 The product data is stored in a [MySQL](https://www.mysql.com/) database, 
 ensuring performance and reliability with proper database handling techniques 
 such as connection pooling, transactions, and error handling.    
-
+        
+In the **docker-version** branch, the application has been containerized using [Docker Compose](https://docs.docker.com/compose/). This setup includes two services:
+* myapp - The Golang application.
+* mysql - The MySQL database service.
+Docker Compose manages the lifecycle of both services, making it easier to set up and run the application with minimal configuration.
+      
 ## Features
 * Login: Authenticate users to generate a JWT token. Use this token to access other protected API endpoints.
      * The others are protected routes, meaning a valid JWT token must be provided in the request headers.
@@ -137,11 +142,20 @@ go mod tidy
 DATABASE_URL=root:password@tcp(localhost:3306)/mydatabase?charset=utf8mb4&parseTime=True&loc=Local
 ```
 * Apply the SQL schema using the provided script.
-####　Run the Application:
+#### Run the Application:
 ```
 go run \main.go
 ```
-    
+#### Access the API:
+* The API will be available at *http://localhost:8080.*
+       
+## Testing
+This project includes unit tests for both the controllers and models. To run the tests and generate a coverage report, follow these steps:
+* These commands allow you to navigate to specific directories where files are located, enabling you to run tests within those directories.
+```
+cd ./controllers
+cd ./models
+```
 #### Run Unit Tests
 * To run unit tests for the API endpoints and database interactions, use the following command:
 ```
@@ -166,8 +180,11 @@ The test coverage is approximately **80%**, ensuring a high level of code covera
 * godotenv: The project uses **godotenv** to manage environment variables. This allows for flexible configuration settings without hardcoding sensitive information into the codebase. Ensure to create a `.env` file with the necessary environment variables for proper configuration.
 * Error Handling: Proper error handling is implemented to ensure meaningful responses and uses the **Logrus** library which provides detailed logs that help in debugging and monitoring the application's behavior.
 * JSON: All data between the client and server is exchanged in JSON format for simplicity and consistency.
-Performance Considerations: Efficient database queries and connection pooling are used to handle performance concerns.
+* Docker: The **docker-version** branch uses Docker technology, specifically **Docker Compose**, to containerize the application.
+* Performance Considerations: Efficient database queries and connection pooling are used to handle performance concerns.
+        
 ## Future Enhancements
 * Expand the authentication and authorization system by integrating user accounts stored in the database to validate user credentials, in addition to the existing JWT-based authentication.
 * Add pagination to the product listing endpoint.
 * Include more comprehensive validation for input data.
+* Set up a more secure method for handling environment variables, such as using secret management tools or encryption techniques, to protect sensitive information.
